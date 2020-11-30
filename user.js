@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-
+const verify = require('./verify')
 const jwt = require('jsonwebtoken')
 
 router.post('/', (req, res) => {
 
-  // 아이디, 비밀번호 수집
+  // 아이디, 비밀번호
   const {
     id, pw
   } = req.body
@@ -21,24 +21,12 @@ router.post('/', (req, res) => {
   })
 })
 
-router.post('/login', (req, res) => {
-  const {
-    token
-  } = req.body
 
-  try {
-    const decoded = jwt.verify(token, 'secretKey')
-    console.log(decoded)
+router.post('/login', verify, (req, res) => {
+  res.json({
+    message : req.user
+  })
 
-    res.json({
-      message : decoded
-    })
-
-  } catch (e) {
-    res.json({
-      message : e.message
-    })
-  }
 })
 
 
